@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
 
                             @Override
                             public void onError(ANError anError) {
-                                Toast.makeText(MainActivity.this, "anError.getErrorDetail()", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(MainActivity.this, "Error Occurred!", Toast.LENGTH_SHORT).show();
                                 System.out.println(anError.getErrorDetail());
                             }
                         });
