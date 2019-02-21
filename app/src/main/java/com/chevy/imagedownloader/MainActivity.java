@@ -1,5 +1,6 @@
 package com.chevy.imagedownloader;
 
+import android.os.Build;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,10 +17,16 @@ import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.DownloadListener;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.file.Paths;
+import java.util.Random;
+
 public class MainActivity extends AppCompatActivity {
 
     ImageView image;
-    String url;
+    String url = "https://sites.psu.edu/siowfa16/files/2016/10/YeDYzSR-10apkm4.jpg";
     EditText edit_url;
     Button download_button;
 
@@ -30,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Random r = new Random();
+
         AndroidNetworking.initialize(getApplicationContext());
 
         image = (ImageView) findViewById(R.id.image);
@@ -38,9 +47,6 @@ public class MainActivity extends AppCompatActivity {
 
         //Path for image
         dirPath = Environment.getExternalStorageDirectory() + "/Downloaded";
-
-        //Image name
-        fileName = "image.jpg";
 
         //Working on Edit_text text change
         edit_url.addTextChangedListener(new TextWatcher() {
@@ -53,11 +59,15 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                //Image name
+                if(!url.isEmpty()) {
+                    fileName = "image" + (new Random().nextInt(10000)) + url.substring(url.lastIndexOf("."));
+                }
             }
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
             }
         });
 
@@ -75,7 +85,8 @@ public class MainActivity extends AppCompatActivity {
 
                             @Override
                             public void onError(ANError anError) {
-                                Toast.makeText(MainActivity.this, "Error Occurred", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(MainActivity.this, "anError.getErrorDetail()", Toast.LENGTH_SHORT).show();
+                                System.out.println(anError.getErrorDetail());
                             }
                         });
             }
